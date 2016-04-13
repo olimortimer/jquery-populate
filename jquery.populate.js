@@ -1,6 +1,7 @@
 
 jQuery.fn.populate = function(obj, options) {
 
+	var deferred = $.Deferred();
 
 	// ------------------------------------------------------------------------------------------
 	// JSON conversion function
@@ -264,9 +265,12 @@ jQuery.fn.populate = function(obj, options) {
 					{
 						method(this, i, arr[i]);
 					}
+
+					deferred.resolve(this);
+
 			}
 
 		);
 
-return this;
+return deferred.promise();
 };
