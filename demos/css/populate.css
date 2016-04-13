@@ -3,7 +3,7 @@
 		font-weight:bold;
 		}
 
-	code, 
+	code,
 	pre{
 		margin:10px 15px;
 		font-family:"Courier New", Courier, monospace;
@@ -21,16 +21,16 @@
 		white-space:pre;
 		}
 
-		
+
 	.red {
 		color:#f00;
 		font-style:italic;
 		}
-		
+
 	.no-border{
 		border:none !important;
 		}
-		
+
 	.plain{
 		border:none !important;
 		list-style:none !important;

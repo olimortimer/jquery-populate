@@ -1,16 +1,16 @@
 
 jQuery.fn.populate = function(obj, options) {
-	
-	
+
+
 	// ------------------------------------------------------------------------------------------
 	// JSON conversion function
-	
-		// convert 
+
+		// convert
 			function parseJSON(obj, path)
 			{
 				// prepare
 					path = path || '';
-				
+
 				// iteration (objects / arrays)
 					if(obj == undefined)
 					{
@@ -24,7 +24,7 @@ jQuery.fn.populate = function(obj, options) {
 							parseJSON(obj[prop], name);
 						}
 					}
-						
+
 					else if(obj.constructor == Array)
 					{
 						for(var i = 0; i < obj.length; i++)
@@ -35,7 +35,7 @@ jQuery.fn.populate = function(obj, options) {
 							parseJSON(obj[i], name);
 						}
 					}
-					
+
 				// assignment (values)
 					else
 					{
@@ -44,26 +44,26 @@ jQuery.fn.populate = function(obj, options) {
 						{
 							arr[path] = obj;
 						}
-		
+
 						// if the element name HAS been defined, but it's a single value, convert to an array and add the new value
 						else if(arr[path].constructor != Array)
 						{
 							arr[path] = [arr[path], obj];
 						}
-							
+
 						// if the element name HAS been defined, and is already an array, push the single value on the end of the stack
 						else
 						{
 							arr[path].push(obj);
 						}
 					}
-	
+
 			};
 
 
 	// ------------------------------------------------------------------------------------------
 	// population functions
-		
+
 		function debug(str)
 		{
 			if(window.console && console.log)
@@ -71,7 +71,7 @@ jQuery.fn.populate = function(obj, options) {
 				console.log(str);
 			}
 		}
-		
+
 		function getElementName(name)
 		{
 			if (!options.phpNaming)
@@ -80,7 +80,7 @@ jQuery.fn.populate = function(obj, options) {
 			}
 			return name;
 		}
-		
+
 		function populateElement(parentElement, name, value)
 		{
 			var selector	= options.identifier == 'id' ? '#' + name : '[' +options.identifier+ '="' +name+ '"]';
@@ -89,14 +89,14 @@ jQuery.fn.populate = function(obj, options) {
 			value			= value == 'null' ? '' : value;
 			element.html(value);
 		}
-		
+
 		function populateFormElement(form, name, value)
 		{
 
 			// check that the named element exists in the form
 				var name	= getElementName(name); // handle non-php naming
 				var element	= form[name];
-				
+
 			// if the form element doesn't exist, check if there is a tag with that id
 				if(element == undefined)
 				{
@@ -107,7 +107,7 @@ jQuery.fn.populate = function(obj, options) {
 							element.html(value);
 							return true;
 						}
-					
+
 					// nope, so exit
 						if(options.debug)
 						{
@@ -115,57 +115,57 @@ jQuery.fn.populate = function(obj, options) {
 						}
 						return false;
 				}
-					
-			// debug options				
+
+			// debug options
 				if(options.debug)
 				{
 					_populate.elements.push(element);
 				}
-				
+
 			// now, place any single elements in an array.
-			// this is so that the next bit of code (a loop) can treat them the 
+			// this is so that the next bit of code (a loop) can treat them the
 			// same as any array-elements passed, ie radiobutton or checkox arrays,
 			// and the code will just work
 
 				elements = element.type == undefined && element.length ? element : [element];
-				
-				
+
+
 			// populate the element correctly
-			
+
 				for(var e = 0; e < elements.length; e++)
 				{
-					
+
 				// grab the element
 					var element = elements[e];
-					
+
 				// skip undefined elements or function objects (IE only)
 					if(!element || typeof element == 'undefined' || typeof element == 'function')
 					{
 						continue;
 					}
-					
+
 				// anything else, process
 					switch(element.type || element.tagName)
 					{
-	
+
 						case 'radio':
 							// use the single value to check the radio button
 							element.checked = (element.value != '' && value.toString() == element.value);
-							
+
 						case 'checkbox':
 							// depends on the value.
 							// if it's an array, perform a sub loop
 							// if it's a value, just do the check
-							
+
 							var values = value.constructor == Array ? value : [value];
 							for(var j = 0; j < values.length; j++)
 							{
 								element.checked |= element.value == values[j];
 							}
-							
+
 							//element.checked = (element.value != '' && value.toString().toLowerCase() == element.value.toLowerCase());
 							break;
-							
+
 						case 'select-multiple':
 							var values = value.constructor == Array ? value : [value];
 							for(var i = 0; i < element.options.length; i++)
@@ -176,12 +176,12 @@ jQuery.fn.populate = function(obj, options) {
 								}
 							}
 							break;
-						
+
 						case 'select':
 						case 'select-one':
 							element.value = value.toString() || value;
 							break;
-	
+
 						case 'text':
 						case 'button':
 						case 'textarea':
@@ -189,24 +189,24 @@ jQuery.fn.populate = function(obj, options) {
 						default:
 							value			= value == null ? '' : value;
 							element.value	= value;
-							
+
 					}
-						
+
 				}
 
 		}
-		
 
-		
+
+
 	// ------------------------------------------------------------------------------------------
 	// options & setup
-		
+
 		// exit if no data object supplied
 			if (obj === undefined)
 			{
 				return this;
 			};
-		
+
 		// options
 			var options = jQuery.extend
 			(
@@ -219,18 +219,18 @@ jQuery.fn.populate = function(obj, options) {
 				},
 				options
 			);
-				
+
 			if(options.phpIndices)
 			{
 				options.phpNaming = true;
 			}
-	
+
 	// ------------------------------------------------------------------------------------------
 	// convert hierarchical JSON to flat array
-		
+
 			var arr	= [];
 			parseJSON(obj);
-			
+
 			if(options.debug)
 			{
 				_populate =
@@ -240,19 +240,19 @@ jQuery.fn.populate = function(obj, options) {
 					elements:	[]
 				}
 			}
-	
+
 	// ------------------------------------------------------------------------------------------
 	// main process function
-		
+
 		this.each
 		(
 			function()
 			{
-				
+
 				// variables
 					var tagName	= this.tagName.toLowerCase();
 					var method	= tagName == 'form' ? populateFormElement : populateElement;
-					
+
 				// reset form?
 					if(tagName == 'form' && options.resetForm)
 					{
@@ -265,7 +265,7 @@ jQuery.fn.populate = function(obj, options) {
 						method(this, i, arr[i]);
 					}
 			}
-			
+
 		);
 
 return this;
