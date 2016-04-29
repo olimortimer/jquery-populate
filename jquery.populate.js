@@ -101,6 +101,9 @@ jQuery.fn.populate = function(obj, options) {
 			// if the form element doesn't exist, check if there is a tag with that id
 				if(element == undefined)
 				{
+					// Escape square brackets
+					name = name.replace('[', '\\[').replace(']', '\\]');
+
 					// look for the element
 						element = jQuery('#' + name, form);
 						if(element)
