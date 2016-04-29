@@ -102,7 +102,7 @@ jQuery.fn.populate = function(obj, options) {
 				if(element == undefined)
 				{
 					// Escape square brackets
-					name = name.replace('[', '\\[').replace(']', '\\]');
+					name = name.replace(/\[/g, '\\[').replace(/\]/g, '\\]');
 
 					// look for the element
 						element = jQuery('#' + name, form);
