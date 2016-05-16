@@ -183,7 +183,18 @@ jQuery.fn.populate = function(obj, options) {
 
 						case 'select':
 						case 'select-one':
-							element.value = value.toString() || value;
+
+							value = value.toString() || value;
+
+							// Check our value exists
+							if($(element).find('option[value="'+value+'"]').length) {
+								element.value = value;
+
+							// Else select the first
+							} else {
+								element.value = $(element).find('option:first').val();
+							}
+
 							break;
 
 						case 'text':
