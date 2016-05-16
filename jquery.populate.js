@@ -187,12 +187,12 @@ jQuery.fn.populate = function(obj, options) {
 							value = value.toString() || value;
 
 							// Check our value exists
-							if($(element).find('option[value="'+value+'"]').length) {
+							if(jQuery(element).find('option[value="'+value+'"]').length) {
 								element.value = value;
 
 							// Else select the first
 							} else {
-								element.value = $(element).find('option:first').val();
+								element.value = jQuery(element).find('option:first').val();
 							}
 
 							break;
