@@ -230,6 +230,7 @@ jQuery.fn.populate = function(obj, options) {
 					phpIndices:			false,
 					resetForm:			true,
 					identifier:			'id',
+					ignore:				false,
 					debug:				false
 				},
 				options
@@ -277,6 +278,9 @@ jQuery.fn.populate = function(obj, options) {
 				// update elements
 					for(var i in arr)
 					{
+						// Ignore any elements we don't want to populate
+						if(jQuery.inArray(i, options.ignore) !== -1) continue;
+						
 						method(this, i, arr[i]);
 					}
 
