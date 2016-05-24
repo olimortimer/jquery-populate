@@ -101,6 +101,7 @@ jQuery.fn.populate = function(obj, options) {
 			// if the form element doesn't exist, check if there is a tag with that id
 				if(element == undefined)
 				{
+
 					// Escape square brackets
 					name = name.replace(/\[/g, '\\[').replace(/\]/g, '\\]');
 
@@ -278,17 +279,19 @@ jQuery.fn.populate = function(obj, options) {
 				// update elements
 					for(var i in arr)
 					{
+
 						// Ignore any elements we don't want to populate
 						if(jQuery.inArray(i, options.ignore) !== -1) continue;
-						
+
 						method(this, i, arr[i]);
 					}
 
-					deferred.resolve(this);
+					deferred.resolve(arr);
 
 			}
 
 		);
 
-return deferred.promise();
+	return deferred.promise();
+
 };
